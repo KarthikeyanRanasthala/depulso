@@ -5,7 +5,7 @@ import { PROJECT_CONFIG_FILE_NAME } from "./constants";
 
 export const onInit = () => {
   const config = {
-    outputDirectory: "public",
+    outputDirectory: "build",
   };
 
   fs.writeFileSync(

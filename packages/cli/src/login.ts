@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import * as http from "http";
 
 import express from "express";
 import bodyParser from "body-parser";
@@ -26,6 +27,8 @@ const onListen = async () => {
 export const onLogin = () => {
   const app = express();
 
+  let server: http.Server | null = null;
+
   app.use(
     cors({
       origin: "http://localhost:9698",
@@ -51,7 +54,9 @@ export const onLogin = () => {
     }
 
     res.json({});
+
+    server?.close();
   });
 
-  app.listen(PORT, onListen);
+  server = app.listen(PORT, onListen);
 };

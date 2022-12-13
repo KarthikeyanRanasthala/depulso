@@ -3,6 +3,7 @@
 import { Command } from "commander";
 
 import { version } from "../package.json";
+import { onDeploy } from "./deploy";
 import { onInit } from "./init";
 import { onLogin } from "./login";
 import { onLogout } from "./logout";
@@ -24,7 +25,7 @@ program
 program
   .command("deploy")
   .description("Deploys the current project")
-  .action(() => console.log("Deploy"));
+  .action(() => onDeploy());
 
 program
   .command("logout")
