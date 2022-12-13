@@ -4,6 +4,7 @@ import { Command } from "commander";
 
 import { version } from "../package.json";
 import { onLogin } from "./login";
+import { onLogout } from "./logout";
 
 const program = new Command();
 
@@ -27,6 +28,6 @@ program
 program
   .command("logout")
   .description("Logs out of your account")
-  .action(() => console.log("Logout"));
+  .action(() => onLogout());
 
 program.parse(process.argv);

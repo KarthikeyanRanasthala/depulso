@@ -1,9 +1,14 @@
+import fs from "fs";
+import path from "path";
+
 import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import open from "open";
 
 import { client } from "./supabase";
+import { AUTH_CONFIG_FILE_NAME } from "./constants";
+import { getConfigDir } from "./utils";
 
 const onListen = async () => {
   const { data, error } = await client.auth.signInWithOAuth({
@@ -18,7 +23,7 @@ const onListen = async () => {
   }
 };
 
-const onLogin = () => {
+export const onLogin = () => {
   const app = express();
 
   app.use(
@@ -32,12 +37,21 @@ const onLogin = () => {
   const PORT = 9697;
 
   app.post("/credentials", (req, res) => {
-    console.log({ body: req.body });
+    const configDir = getConfigDir();
+
+    if (configDir) {
+      if (!fs.existsSync(configDir)) {
+        fs.mkdirSync(configDir, { recursive: true });
+      }
+
+      fs.writeFileSync(
+        path.join(configDir, AUTH_CONFIG_FILE_NAME),
+        JSON.stringify(req.body)
+      );
+    }
 
     res.json({});
   });
 
   app.listen(PORT, onListen);
 };
-
-export { onLogin };
