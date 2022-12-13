@@ -1,0 +1,22 @@
+{
+  "name": "depulso",
+  "version": "0.0.1",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KarthikeyanRanasthala/depulso.git"
+  },
+  "keywords": [],
+  "author": "Karthikeyan Ranasthala",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/KarthikeyanRanasthala/depulso/issues"
+  },
+  "homepage": "https://github.com/KarthikeyanRanasthala/depulso#readme"
+}

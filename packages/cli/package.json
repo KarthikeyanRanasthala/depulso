@@ -1,0 +1,24 @@
+{
+  "name": "cli",
+  "version": "0.0.1",
+  "description": "The command-line interface for Depulso",
+  "main": "index.js",
+  "bin": "dist/index.js",
+  "preferGlobal": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js",
+    "prebuild": "rimraf dist",
+    "build": "ncc build src/index.ts --no-cache"
+  },
+  "keywords": [],
+  "author": "Karthikeyan Ranasthala",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@tsconfig/node16": "1.0.3",
+    "@types/node": "18.11.14",
+    "@vercel/ncc": "0.36.0",
+    "rimraf": "3.0.2",
+    "typescript": "4.9.4"
+  }
+}
