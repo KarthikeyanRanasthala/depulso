@@ -3,6 +3,7 @@
 import { Command } from "commander";
 
 import { version } from "../package.json";
+import { onInit } from "./init";
 import { onLogin } from "./login";
 import { onLogout } from "./logout";
 
@@ -18,7 +19,7 @@ program
 program
   .command("init")
   .description("Inits a new project")
-  .action(() => console.log("Init"));
+  .action(() => onInit());
 
 program
   .command("deploy")
