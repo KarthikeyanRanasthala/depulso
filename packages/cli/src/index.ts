@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 import { Command } from "commander";
+
 import { version } from "../package.json";
+import { onLogin } from "./login";
 
 const program = new Command();
 
@@ -10,7 +12,7 @@ program.version(version);
 program
   .command("login")
   .description("Logs into your account")
-  .action(() => console.log("Login"));
+  .action(() => onLogin());
 
 program
   .command("init")
