@@ -31,7 +31,7 @@ export const onLogin = () => {
 
   app.use(
     cors({
-      origin: "http://localhost:9698",
+      origin: "https://auth.karthikeyan.sh",
     })
   );
 
