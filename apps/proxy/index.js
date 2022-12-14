@@ -59,20 +59,22 @@ app.get(
 
     dirname = dirname === "/" ? "" : dirname;
 
+    const basename = path.basename(req.path);
+
     const { data: dirData, error: dirError } = await client.storage
       .from(bucket)
-      .list(`${req.depulsoProject}${dirname}`);
+      .list(`${req.depulsoProject}${dirname}`, {
+        search: basename,
+      });
 
     if (dirError) {
       return next({ status: 500, ...dirError });
     }
 
-    const basename = path.basename(req.path);
-
     // Could be a file or a folder
-    const content = dirData.find(
-      (file) => file.name === basename || file.name === `${basename}.html`
-    );
+    const content =
+      dirData.find((file) => file.name === `${basename}.html`) ||
+      dirData.find((file) => file.name === basename);
 
     if (content) {
       // A file will have an id, a folder won't have an id
