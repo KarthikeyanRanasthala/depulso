@@ -4,6 +4,7 @@ import path from "path";
 import { AUTH_CONFIG_FILE_NAME, PROJECT_CONFIG_FILE_NAME } from "./constants";
 import { getAllFiles, getConfigDir, getUniqueName } from "./utils";
 import { client } from "./supabase";
+import mime from "mime";
 
 export const onDeploy = async () => {
   const configDir = getConfigDir();
@@ -61,9 +62,17 @@ export const onDeploy = async () => {
           path.join(outputDirectory, files[i])
         );
 
+        const contentType = mime.getType(files[i]);
+
+        console.log({ contentType }, files[i]);
+
         const { error } = await client.storage
           .from("deployments")
-          .upload(`${project}${files[i]}`, fileContent);
+          .upload(
+            `${project}${files[i]}`,
+            fileContent,
+            contentType ? { contentType } : {}
+          );
 
         if (error) {
           console.log(error);
