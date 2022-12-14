@@ -84,6 +84,8 @@ export const onDeploy = async () => {
           process.exit(1);
         }
       }
+
+      console.log(`Deployed to https://${project}.karthikeyan.sh`);
     } else {
       console.log("No Project Init");
 
