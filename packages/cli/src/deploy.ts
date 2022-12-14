@@ -68,11 +68,15 @@ export const onDeploy = async () => {
 
         const { error } = await client.storage
           .from("deployments")
-          .upload(
-            `${project}${files[i]}`,
-            fileContent,
-            contentType ? { contentType, upsert: true } : { upsert: true }
-          );
+          .upload(`${project}${files[i]}`, fileContent, {
+            upsert: true,
+            ...(contentType
+              ? {
+                  contentType,
+                  ...(contentType === "text/html" ? { cacheControl: "0" } : {}),
+                }
+              : {}),
+          });
 
         if (error) {
           console.log(error);
