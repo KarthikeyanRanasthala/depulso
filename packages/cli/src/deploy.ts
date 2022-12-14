@@ -71,7 +71,7 @@ export const onDeploy = async () => {
           .upload(
             `${project}${files[i]}`,
             fileContent,
-            contentType ? { contentType } : {}
+            contentType ? { contentType, upsert: true } : { upsert: true }
           );
 
         if (error) {
