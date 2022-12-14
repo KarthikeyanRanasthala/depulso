@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "The command-line interface for Depulso",
   "main": "index.js",
-  "bin": "dist/index.js",
+  "bin": {
+    "depulso": "dist/index.js"
+  },
   "preferGlobal": true,
   "files": [
     "dist"
