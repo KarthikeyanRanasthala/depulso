@@ -1,0 +1,15 @@
+{
+  "name": "proxy",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Karthikeyan Ranasthala",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "express": "4.18.2",
+    "http-proxy-middleware": "2.0.6"
+  }
+}
