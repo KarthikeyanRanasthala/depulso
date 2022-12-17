@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
 import SuccessState from "./components/SuccessState";
+import FailureState from "./components/FailureState";
+import LoadingState from "./components/LoadingState";
 
 enum StateEnum {
   ACCESS_DENIED = "ACCESS_DENIED",
@@ -58,19 +60,19 @@ const App = () => {
 
   switch (state) {
     case StateEnum.ACCESS_DENIED:
-      return <p>Access Denied</p>;
+      return <FailureState heading="Access Denied" />;
 
     case StateEnum.UNKNOWN_ERROR:
-      return <p>Unknown Error</p>;
+      return <FailureState heading="Unknown Error" />;
 
     case StateEnum.CREDS_POST_ERROR:
-      return <p>Credentials Post Error</p>;
+      return <FailureState heading="Failed to Login" />;
 
     case StateEnum.SUCCESS:
       return <SuccessState />;
 
     default:
-      return <p>Loading...</p>;
+      return <LoadingState />;
   }
 };
 
