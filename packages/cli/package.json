@@ -11,7 +11,6 @@
     "dist"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
     "prebuild": "rimraf dist",
     "build": "ncc build src/index.ts --no-cache"
@@ -24,8 +23,8 @@
     "@supabase/supabase-js": "2.2.1",
     "@tsconfig/node16": "1.0.3",
     "@types/cors": "2.8.13",
-    "@types/express": "4.17.14",
-    "@types/node": "18.11.14",
+    "@types/express": "4.17.15",
+    "@types/node": "16.11.7",
     "@vercel/ncc": "0.36.0",
     "body-parser": "1.20.1",
     "commander": "9.4.1",
