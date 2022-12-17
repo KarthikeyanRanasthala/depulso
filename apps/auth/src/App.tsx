@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-
 import axios from "axios";
+
+import SuccessState from "./components/SuccessState";
 
 enum StateEnum {
   ACCESS_DENIED = "ACCESS_DENIED",
@@ -66,7 +67,7 @@ const App = () => {
       return <p>Credentials Post Error</p>;
 
     case StateEnum.SUCCESS:
-      return <p>Success</p>;
+      return <SuccessState />;
 
     default:
       return <p>Loading...</p>;
