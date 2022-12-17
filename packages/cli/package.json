@@ -21,7 +21,7 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@netlify/framework-info": "9.5.3",
-    "@supabase/supabase-js": "2.2.0",
+    "@supabase/supabase-js": "2.2.1",
     "@tsconfig/node16": "1.0.3",
     "@types/cors": "2.8.13",
     "@types/express": "4.17.14",

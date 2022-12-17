@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/KarthikeyanRanasthala/depulso/issues"
   },
-  "homepage": "https://github.com/KarthikeyanRanasthala/depulso#readme"
+  "homepage": "https://github.com/KarthikeyanRanasthala/depulso#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "2.2.1"
+  }
 }
