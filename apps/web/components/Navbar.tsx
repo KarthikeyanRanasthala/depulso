@@ -4,11 +4,30 @@ import {
   Text,
   Avatar,
   Dropdown,
+  Button,
 } from "@nextui-org/react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 
-const collapseItems = ["Dashboard", "Log Out"];
+const collapseItems = ["Features", "Docs", "GitHub"];
+
+// @todo: add error state
 
 const Navbar = () => {
+  const user = useUser();
+
+  const client = useSupabaseClient();
+  const onLogin = async () => {
+    const { data, error } = await client.auth.signInWithOAuth({
+      provider: "github",
+    });
+  };
+
+  const handleDropdownAction = async (actionName: string) => {
+    if (actionName === "logout") {
+      const { error } = await client.auth.signOut();
+    }
+  };
+
   return (
     <NextUINavbar isBordered variant="sticky" maxWidth="fluid">
       <NextUINavbar.Toggle showIn="xs" />
@@ -43,39 +62,56 @@ const Navbar = () => {
           },
         }}
       >
-        <Dropdown placement="bottom-right">
-          <NextUINavbar.Item>
-            <Dropdown.Trigger>
-              <Avatar
-                bordered
-                as="button"
-                color="secondary"
-                size="md"
-                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
-              />
-            </Dropdown.Trigger>
-          </NextUINavbar.Item>
-          <Dropdown.Menu
-            aria-label="User menu actions"
-            color="secondary"
-            onAction={(actionKey) => console.log({ actionKey })}
-          >
-            <Dropdown.Item key="profile" css={{ height: "$18" }}>
-              <Text b color="inherit" css={{ d: "flex" }}>
-                Signed in as
-              </Text>
-              <Text b color="inherit" css={{ d: "flex" }}>
-                zoey@example.com
-              </Text>
-            </Dropdown.Item>
-            <Dropdown.Item key="dashboard" withDivider>
-              Dashboard
-            </Dropdown.Item>
-            <Dropdown.Item key="logout" color="error">
-              Log Out
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
+        {user ? (
+          <Dropdown placement="bottom-right">
+            <NextUINavbar.Item>
+              <Dropdown.Trigger>
+                <Avatar
+                  bordered
+                  as="button"
+                  color="secondary"
+                  size="md"
+                  src={user?.user_metadata?.avatar_url}
+                />
+              </Dropdown.Trigger>
+            </NextUINavbar.Item>
+            <Dropdown.Menu
+              aria-label="User menu actions"
+              color="secondary"
+              onAction={(actionKey) =>
+                handleDropdownAction(actionKey as string)
+              }
+            >
+              <Dropdown.Item key="profile" css={{ height: "$18" }}>
+                <Text b color="inherit" css={{ d: "flex" }}>
+                  Signed in as
+                </Text>
+                <Text
+                  b
+                  color="inherit"
+                  css={{
+                    d: "flex",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                  }}
+                >
+                  {user?.user_metadata?.name || user.email}
+                </Text>
+              </Dropdown.Item>
+              <Dropdown.Item key="dashboard" withDivider>
+                Dashboard
+              </Dropdown.Item>
+              <Dropdown.Item key="logout" color="error">
+                Log Out
+              </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+        ) : (
+          <Button onClick={onLogin} color={"secondary"}>
+            Login
+          </Button>
+        )}
       </NextUINavbar.Content>
       <NextUINavbar.Collapse>
         {collapseItems.map((item, index) => (
@@ -85,7 +121,6 @@ const Navbar = () => {
             css={{
               color: index === collapseItems.length - 1 ? "$error" : "",
             }}
-            isActive={index === 2}
           >
             <Link
               color="inherit"
