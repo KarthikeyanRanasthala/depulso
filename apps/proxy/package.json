@@ -2,14 +2,12 @@
   "name": "proxy",
   "version": "0.0.1",
   "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "Karthikeyan Ranasthala",
   "license": "Apache-2.0",
   "dependencies": {
-    "@supabase/supabase-js": "2.2.0",
+    "@supabase/supabase-js": "2.2.1",
     "express": "4.18.2",
     "http-proxy-middleware": "2.0.6"
   }
