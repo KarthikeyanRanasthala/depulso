@@ -21,7 +21,21 @@ const generateProjectName = () =>
     length: 3,
   });
 
-const canCreateProject = async (requestQuery: unknown) => {
+const canCreateProject = async (user: User, requestQuery: unknown) => {
+  const { data: limitData, error: limitError } = await storageAdmin
+    .from("objects")
+    .select("*")
+    .eq("owner", user.id)
+    .contains("path_tokens[2]", [constants.emptyFolderPlaceholder]);
+
+  if (limitError) {
+    throw new Error(limitError.message);
+  }
+
+  if (limitData.length >= Number(env.MAX_PROJECTS_LIMIT)) {
+    return { canCreate: false, message: "Reached maximum projects limit" };
+  }
+
   const querySchema = z.object({
     name: z.string().min(4),
   });
@@ -39,17 +53,20 @@ const canCreateProject = async (requestQuery: unknown) => {
   }
 
   if (data.length === 0) {
-    return true;
+    return { canCreate: true };
   }
 
-  return false;
+  return { canCreate: false };
 };
 
 router.post("/", async (req: Request, res: Response) => {
-  const canCreate = await canCreateProject(req.body);
+  const { canCreate, message = "" } = await canCreateProject(
+    res.locals.user,
+    req.body
+  );
 
   if (!canCreate) {
-    res.sendStatus(400);
+    res.status(400).send({ message });
     return;
   }
 
@@ -83,10 +100,17 @@ router.get("/suggestion", async (req: Request, res: Response) => {
 
   while (count < 5) {
     const suggestion = generateProjectName();
-    const canCreate = await canCreateProject(suggestion);
+    const { canCreate, message } = await canCreateProject(res.locals.user, {
+      name: suggestion,
+    });
 
     if (canCreate) {
       res.json({ suggestion });
+      return;
+    }
+
+    if (message) {
+      res.status(400).send({ message });
       return;
     }
 
@@ -97,9 +121,9 @@ router.get("/suggestion", async (req: Request, res: Response) => {
 });
 
 router.get("/availability", async (req: Request, res: Response) => {
-  const isAvailable = await canCreateProject(req.query);
+  const { canCreate } = await canCreateProject(res.locals.user, req.query);
 
-  res.json({ isAvailable });
+  res.json({ isAvailable: canCreate });
 });
 
 export default router;

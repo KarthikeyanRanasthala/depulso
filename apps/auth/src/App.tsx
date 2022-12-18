@@ -18,7 +18,7 @@ const App = () => {
   const onSuccess = useCallback(
     async (accessToken: string, refreshToken: string) => {
       try {
-        await axios.post("http://localhost:9697/credentials", {
+        await axios.post("http://localhost:9697/callback", {
           accessToken,
           refreshToken,
         });
