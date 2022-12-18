@@ -12,7 +12,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const envSchema = z.object({
-  SUPABASE_ANON_KEY: z.string().min(1),
+  SUPABASE_SERVICE_ROLE: z.string().min(1),
   SUPABASE_URL: z.string().url(),
   SUPABASE_BUCKET_ID: z.string().min(1),
   PORT: z.string(),
@@ -21,9 +21,13 @@ const envSchema = z.object({
 
 const env = envSchema.parse(process.env);
 
-const client = createClient(env.SUPABASE_URL, env.SUPABASE_ANON_KEY, {
+const client = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE, {
   auth: {
     persistSession: false,
+    autoRefreshToken: false,
+  },
+  db: {
+    schema: "storage",
   },
 });
 
@@ -47,6 +51,8 @@ app.get(
         return next({ status: 500, ...error });
       }
 
+      console.log({ data, error }, env.SUPABASE_BUCKET_ID, req.depulsoProject);
+
       const file = data.find((el) => el.id && el.name === "index.html");
 
       if (file) {
@@ -54,6 +60,7 @@ app.get(
         req.depulsoMimeType = file.metadata.mimetype;
         return next();
       } else {
+        console.log("1");
         return next({ status: 404 });
       }
     }
