@@ -98,7 +98,7 @@ export const onDeploy = async () => {
     }
 
     uploadProgress.succeed(
-      `Deployment successful, https://${projectConfig?.project}.karthikeyan.sh`
+      `Deployment successful, https://${projectConfig?.project}.depulso.site`
     );
   } else {
     await onPromptForLogin();
