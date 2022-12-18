@@ -1,12 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid } from "@nextui-org/react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import {
+  useSessionContext,
+  useSupabaseClient,
+} from "@supabase/auth-helpers-react";
 
 import ProjectCard from "../components/ProjectCard";
 import CreateProjectModal from "../components/Modal";
+import { useRouter } from "next/router";
 
 const Dashboard = () => {
   const client = useSupabaseClient();
+  const { isLoading, session } = useSessionContext();
+  const router = useRouter();
+
+  if (!isLoading && !session) {
+    router.push("/");
+  }
+
   const [deployments, setDeployments] = useState<Array<{ name: string }>>([]);
   const [modalVisiblity, setModalVisiblity] = React.useState(false);
 
@@ -33,14 +44,19 @@ const Dashboard = () => {
         css={{ maxWidth: "1200px", margin: "auto", pt: "24px" }}
       >
         <Grid css={{ alignSelf: "flex-end", pr: "12px" }}>
-          <Button color="gradient" flat auto onClick={handleModal}>
+          <Button
+            color="gradient"
+            auto
+            onClick={handleModal}
+            css={{ zIndex: 1 }}
+          >
             Create new project
           </Button>
         </Grid>
         <Grid>
           <Grid.Container gap={2} justify="center">
             {deployments?.map((el) => (
-              <Grid xs={4}>
+              <Grid key={el.name} xs={4}>
                 <ProjectCard name={el.name} getDeployments={getDeployments} />
               </Grid>
             ))}

@@ -7,6 +7,7 @@ import {
   Button,
 } from "@nextui-org/react";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import { default as NextLink } from "next/link";
 
 const collapseItems = ["Features", "Docs", "GitHub"];
 
@@ -17,8 +18,9 @@ const Navbar = () => {
 
   const client = useSupabaseClient();
   const onLogin = async () => {
-    const { data, error } = await client.auth.signInWithOAuth({
+    await client.auth.signInWithOAuth({
       provider: "github",
+      options: { redirectTo: `http://${window.location.origin}/dashboard/` },
     });
   };
 
@@ -91,16 +93,15 @@ const Navbar = () => {
                   color="inherit"
                   css={{
                     d: "flex",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
                   }}
                 >
                   {user?.user_metadata?.name || user.email}
                 </Text>
               </Dropdown.Item>
               <Dropdown.Item key="dashboard" withDivider>
-                Dashboard
+                <NextLink href={"/dashboard"}>
+                  <Text b>Dashboard</Text>
+                </NextLink>
               </Dropdown.Item>
               <Dropdown.Item key="logout" color="error">
                 Log Out
@@ -114,14 +115,8 @@ const Navbar = () => {
         )}
       </NextUINavbar.Content>
       <NextUINavbar.Collapse>
-        {collapseItems.map((item, index) => (
-          <NextUINavbar.CollapseItem
-            key={item}
-            activeColor="secondary"
-            css={{
-              color: index === collapseItems.length - 1 ? "$error" : "",
-            }}
-          >
+        {collapseItems.map((item) => (
+          <NextUINavbar.CollapseItem key={item} activeColor="secondary">
             <Link
               color="inherit"
               css={{
