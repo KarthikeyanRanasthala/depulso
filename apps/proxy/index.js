@@ -33,10 +33,19 @@ const client = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE, {
 
 const app = express();
 
+const customSubDomains = {
+  "auth.depulso.co": "auth",
+  "depulso.co": "app",
+};
+
 app.get(
   "*",
   async (req, _, next) => {
-    req.depulsoProject = req.hostname.split(env.DEPULSO_URL_SUFFIX)[0];
+    if (customSubDomains[req.hostname]) {
+      req.depulsoProject = customSubDomains[req.hostname];
+    } else {
+      req.depulsoProject = req.hostname.split(env.DEPULSO_URL_SUFFIX)[0];
+    }
 
     // For root
     if (req.path === "/") {
