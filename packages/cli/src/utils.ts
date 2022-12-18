@@ -24,18 +24,27 @@ export const getUniqueName = () =>
     length: 3,
   });
 
-export const getAllFiles = (dirPath: string, arrayOfFiles: string[]) => {
+export const getAllFiles = (
+  dirPath: string,
+  arrayOfFiles: { name: string; size: number }[]
+) => {
   const files = fs.readdirSync(dirPath);
 
   arrayOfFiles = arrayOfFiles || [];
 
   files.forEach(function (file) {
-    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+    const stat = fs.statSync(dirPath + "/" + file);
+    if (stat.isDirectory()) {
       arrayOfFiles = getAllFiles(dirPath + "/" + file, arrayOfFiles);
     } else {
-      arrayOfFiles.push(path.join(dirPath, "/", file));
+      arrayOfFiles.push({
+        name: path.join(dirPath, "/", file),
+        size: stat.size / (1024 * 1024),
+      });
     }
   });
 
   return arrayOfFiles;
 };
+
+export const isNextJS = (framework: { id: string }) => framework.id === "next";

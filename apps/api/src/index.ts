@@ -10,10 +10,10 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url(),
   SUPABASE_SERVICE_ROLE: z.string().min(1),
   SUPABASE_BUCKET_ID: z.string().min(1),
-  AUTH_ORIGIN: z.string().url(),
   API_ORIGIN: z.string().url(),
   WEB_ORIGIN: z.string().url(),
   MAX_DEPLOYMENT_SIZE: z.string().min(1),
+  MAX_PROJECTS_LIMIT: z.string().min(1),
   PORT: z.string(),
 });
 
@@ -43,6 +43,7 @@ app.get("/config", (_: Request, res: Response) => {
     supabaseURL: env.SUPABASE_URL,
     supabaseAnonKey: env.SUPABASE_ANON_KEY,
     maxDeploymentSize: env.MAX_DEPLOYMENT_SIZE,
+    maxProjectsLimit: env.MAX_PROJECTS_LIMIT,
   });
 });
 
