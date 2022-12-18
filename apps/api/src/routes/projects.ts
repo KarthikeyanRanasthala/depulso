@@ -121,9 +121,12 @@ router.get("/suggestion", async (req: Request, res: Response) => {
 });
 
 router.get("/availability", async (req: Request, res: Response) => {
-  const { canCreate } = await canCreateProject(res.locals.user, req.query);
+  const { canCreate, message } = await canCreateProject(
+    res.locals.user,
+    req.query
+  );
 
-  res.json({ isAvailable: canCreate });
+  res.json({ isAvailable: canCreate, message });
 });
 
 export default router;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Button, Grid } from "@nextui-org/react";
-
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import ProjectCard from "../components/ProjectCard";
@@ -8,13 +7,13 @@ import CreateProjectModal from "../components/Modal";
 
 const Dashboard = () => {
   const client = useSupabaseClient();
-
   const [deployments, setDeployments] = useState<Array<{ name: string }>>([]);
-
   const [modalVisiblity, setModalVisiblity] = React.useState(false);
 
-  const handleModal = () => {
-    setModalVisiblity((prev) => !prev);
+  const handleModal = () => setModalVisiblity(true);
+
+  const closeHandler = () => {
+    setModalVisiblity(false);
   };
 
   const getDeployments = async () => {
@@ -52,6 +51,8 @@ const Dashboard = () => {
       <CreateProjectModal
         handleModal={handleModal}
         modalVisiblity={modalVisiblity}
+        closeHandler={closeHandler}
+        getDeployments={getDeployments}
       />
     </>
   );
