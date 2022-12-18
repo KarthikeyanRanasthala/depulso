@@ -17,6 +17,7 @@ const HeroComponent = () => {
             textGradient: "45deg, $blue600 -10%, $pink600 100%",
             textTransform: "capitalize",
             margin: 0,
+            textAlign: "center",
           }}
           weight="bold"
         >
@@ -29,6 +30,7 @@ const HeroComponent = () => {
             textGradient: "45deg, $purple600 -10%, $pink600 100%",
             textTransform: "capitalize",
             margin: 0,
+            textAlign: "center",
           }}
           weight="bold"
         >
@@ -41,6 +43,7 @@ const HeroComponent = () => {
             textGradient: "45deg, $yellow600 -20%, $red600 100%",
             textTransform: "capitalize",
             margin: 0,
+            textAlign: "center",
           }}
           weight="bold"
         >
