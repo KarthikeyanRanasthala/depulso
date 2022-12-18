@@ -5,12 +5,25 @@ import axios from "axios";
 import { getConfigDir } from "./utils";
 import { AUTH_CONFIG_FILE_NAME, PROJECT_CONFIG_FILE_NAME } from "./constants";
 
-export const getRemoteConfig = () =>
-  axios.get<{
-    supabaseURL: string;
-    supabaseAnonKey: string;
-    maxDeploymentSize: number;
-  }>("http://localhost:1234/config");
+interface Config {
+  supabaseURL: string;
+  supabaseAnonKey: string;
+  maxDeploymentSize: number;
+}
+
+let cachedConfig: Config | null = null;
+
+export const getRemoteConfig = async () => {
+  if (cachedConfig) {
+    return cachedConfig;
+  }
+
+  const { data } = await axios.get<Config>("http://localhost:1234/config");
+
+  cachedConfig = data;
+
+  return cachedConfig;
+};
 
 export const getSavedTokens = () => {
   const configDir = getConfigDir();

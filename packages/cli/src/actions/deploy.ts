@@ -4,8 +4,8 @@ import path from "path";
 import fs from "fs";
 import mime from "mime";
 
-import { getProjectConfig, getSavedTokens } from "../service";
-import { client } from "../supabase";
+import { getProjectConfig, getRemoteConfig, getSavedTokens } from "../service";
+import { getSupabaseClient } from "../supabase";
 import { getAllFiles } from "../utils";
 import { onInit, onPromptForLogin } from "./init";
 
@@ -36,6 +36,9 @@ export const onDeploy = async () => {
   const tokens = getSavedTokens();
 
   if (tokens) {
+    const client = await getSupabaseClient();
+    const config = await getRemoteConfig();
+
     const { error } = await client.auth.setSession(tokens);
 
     if (error) {
@@ -47,7 +50,7 @@ export const onDeploy = async () => {
 
     const deploymentSize = files.reduce((acc, curr) => acc + curr.size, 0);
 
-    if (deploymentSize > 10) {
+    if (deploymentSize > config?.maxDeploymentSize) {
       ora({
         text: `Deployment failed, size of the '${projectConfig?.outputDirectory}' directory is more than 10MB`,
       }).fail();

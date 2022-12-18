@@ -12,7 +12,7 @@ import { isNextJS } from "../utils";
 import { PROJECT_CONFIG_FILE_NAME } from "../constants";
 import { getProjectConfig, getSavedTokens } from "../service";
 import { onLogin } from "./login";
-import { client } from "../supabase";
+import { getSupabaseClient } from "../supabase";
 
 export const onPromptForLogin = async () => {
   const { shouldLogin } = await inquirer.prompt([
@@ -73,6 +73,8 @@ export const onInit = async () => {
     const tokens = getSavedTokens();
 
     if (tokens) {
+      const client = await getSupabaseClient();
+
       const {
         error,
         data: { session },

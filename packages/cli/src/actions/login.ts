@@ -10,11 +10,13 @@ import ora, { Ora } from "ora";
 
 import { getConfigDir } from "../utils";
 import { AUTH_CONFIG_FILE_NAME } from "../constants";
-import { client } from "../supabase";
+import { getSupabaseClient } from "../supabase";
 
 let spinner: Ora | null = null;
 
 const onListen = async () => {
+  const client = await getSupabaseClient();
+
   const { data, error } = await client.auth.signInWithOAuth({
     provider: "github",
     options: {
