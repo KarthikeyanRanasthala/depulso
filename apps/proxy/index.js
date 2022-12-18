@@ -51,8 +51,6 @@ app.get(
         return next({ status: 500, ...error });
       }
 
-      console.log({ data, error }, env.SUPABASE_BUCKET_ID, req.depulsoProject);
-
       const file = data.find((el) => el.id && el.name === "index.html");
 
       if (file) {
@@ -60,7 +58,6 @@ app.get(
         req.depulsoMimeType = file.metadata.mimetype;
         return next();
       } else {
-        console.log("1");
         return next({ status: 404 });
       }
     }
