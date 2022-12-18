@@ -94,7 +94,7 @@ export const onInit = async () => {
 
       try {
         const response = await axios.get<{ suggestion: string }>(
-          "http://localhost:1234/projects/suggestion",
+          "https://api.depulso.co/projects/suggestion",
           {
             headers: {
               Authorization: `Bearer ${session?.access_token}`,
@@ -135,7 +135,7 @@ export const onInit = async () => {
         creatingProject.start();
 
         await axios.post(
-          "http://localhost:1234/projects",
+          "https://api.depulso.co/projects",
           {
             name: project,
           },

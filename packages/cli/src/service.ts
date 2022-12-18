@@ -18,7 +18,7 @@ export const getRemoteConfig = async () => {
     return cachedConfig;
   }
 
-  const { data } = await axios.get<Config>("http://localhost:1234/config");
+  const { data } = await axios.get<Config>("https://api.depulso.co/config");
 
   cachedConfig = data;
 

@@ -20,7 +20,7 @@ const onListen = async () => {
   const { data, error } = await client.auth.signInWithOAuth({
     provider: "github",
     options: {
-      redirectTo: "http://localhost:9698/",
+      redirectTo: "https://auth.depulso.co/",
     },
   });
 
@@ -49,7 +49,7 @@ export const onLogin = async () => {
 
   app.use(
     cors({
-      origin: "*",
+      origin: "https://auth.depulso.co",
     })
   );
 
