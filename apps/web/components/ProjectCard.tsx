@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const ProjectCard: React.FC<{ name: string }> = (props) => {
   return (
-    <Card css={{ p: "$6", mw: "400px" }} variant="bordered">
+    <Card css={{ mw: "400px" }} variant="bordered">
       <Card.Header>
         <Grid.Container wrap="wrap">
           <Grid xs={12}>
