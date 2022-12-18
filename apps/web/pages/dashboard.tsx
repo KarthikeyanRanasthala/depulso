@@ -41,7 +41,7 @@ const Dashboard = () => {
           <Grid.Container gap={2} justify="center">
             {deployments?.map((el) => (
               <Grid xs={4}>
-                <ProjectCard name={el.name} />
+                <ProjectCard name={el.name} getDeployments={getDeployments} />
               </Grid>
             ))}
           </Grid.Container>

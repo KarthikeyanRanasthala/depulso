@@ -1,7 +1,34 @@
-import { Button, Card, Grid, Link, Text } from "@nextui-org/react";
+import { Button, Card, Grid, Link, Loading, Text } from "@nextui-org/react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Image from "next/image";
+import { useState } from "react";
 
-const ProjectCard: React.FC<{ name: string }> = (props) => {
+interface Props {
+  getDeployments: () => Promise<void>;
+  name: string;
+}
+
+const ProjectCard: React.FC<Props> = (props) => {
+  const { name, getDeployments } = props;
+  const client = useSupabaseClient();
+  const [isDeleting, setDeleting] = useState(false);
+
+  const handleDelete = async (name: string) => {
+    try {
+      setDeleting(true);
+      const { data } = await client.storage.from("deployments").list(name);
+
+      for (let i = 0; i < data.length; i++) {
+        await client.storage
+          .from("deployments")
+          .remove([`${name}/${data[i].name}`]);
+      }
+
+      await getDeployments();
+      setDeleting(false);
+    } catch (err) {}
+  };
+
   return (
     <Card css={{ mw: "400px" }} variant="bordered">
       <Card.Header>
@@ -10,14 +37,14 @@ const ProjectCard: React.FC<{ name: string }> = (props) => {
             <Grid.Container justify="space-between">
               <Grid>
                 <Text h4 css={{ lineHeight: "$xs" }}>
-                  {props.name}
+                  {name}
                 </Text>
               </Grid>
               <Grid>
                 <Link block color="text" css={{ p: "$4" }}>
                   <a
                     style={{ height: "18px", width: "18px" }}
-                    href={`https://${props.name}.depulso.app`}
+                    href={`https://${name}.depulso.app`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -34,7 +61,7 @@ const ProjectCard: React.FC<{ name: string }> = (props) => {
             </Grid.Container>
           </Grid>
           <Grid xs={12}>
-            <Text css={{ color: "$accents8" }}>{props.name}.depulso.app</Text>
+            <Text css={{ color: "$accents8" }}>{name}.depulso.app</Text>
           </Grid>
         </Grid.Container>
       </Card.Header>
@@ -45,8 +72,9 @@ const ProjectCard: React.FC<{ name: string }> = (props) => {
           bordered
           ghost
           css={{ alignSelf: "flex-start", minWidth: "fit-content" }}
+          onPress={() => handleDelete(name)}
         >
-          Delete
+          {isDeleting ? <Loading size="sm" color="white" /> : "Delete"}
         </Button>
       </Card.Footer>
     </Card>
