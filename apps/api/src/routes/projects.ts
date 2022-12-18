@@ -95,6 +95,44 @@ router.post("/", async (req: Request, res: Response) => {
   res.json({});
 });
 
+router.delete("/", async (req: Request, res: Response) => {
+  const bodySchema = z.object({
+    name: z.string().min(1),
+  });
+
+  const parsedBody = bodySchema.safeParse(req.body);
+
+  if (parsedBody.success) {
+    const { data, error } = await storageAdmin
+      .from("objects")
+      .select("*")
+      .eq("owner", (res.locals.user as User).id)
+      .contains("path_tokens[1]", [parsedBody.data.name]);
+
+    if (error) {
+      res.status(500).send({ message: error?.message });
+      return;
+    }
+
+    const promises = data?.map((file) =>
+      storageAdmin.from("objects").delete().eq("name", file.name)
+    );
+
+    const responses = await Promise.all(promises || []);
+
+    const messages = responses.filter((response) => response?.error?.message);
+
+    if (messages.length) {
+      res.status(500).json({ messages });
+      return;
+    }
+
+    res.json({});
+  } else {
+    res.status(400).send({ message: parsedBody.error.message });
+  }
+});
+
 router.get("/suggestion", async (req: Request, res: Response) => {
   let count = 0;
 
