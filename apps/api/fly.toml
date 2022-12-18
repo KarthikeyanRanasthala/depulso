@@ -1,12 +1,9 @@
-# fly.toml file generated for depulso-proxy on 2022-12-19T02:35:31+05:30
+# fly.toml file generated for depulso-api on 2022-12-19T02:46:01+05:30
 
-app = "depulso-proxy"
+app = "depulso-api"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = []
-
-[build]
-  builder = "heroku/buildpacks:20"
 
 [env]
   PORT = "8080"
