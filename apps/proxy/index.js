@@ -6,35 +6,51 @@ const {
   responseInterceptor,
 } = require("http-proxy-middleware");
 const { createClient } = require("@supabase/supabase-js");
+const { z } = require("zod");
+const dotenv = require("dotenv");
 
-const target = "https://tlwefoetxptbnjgmdwhb.supabase.co";
+dotenv.config();
 
-const hostname = ".karthikeyan.sh";
+const envSchema = z.object({
+  SUPABASE_SERVICE_ROLE: z.string().min(1),
+  SUPABASE_URL: z.string().url(),
+  SUPABASE_BUCKET_ID: z.string().min(1),
+  PORT: z.string(),
+  DEPULSO_URL_SUFFIX: z.string().min(1),
+});
 
-const bucket = "deployments";
+const env = envSchema.parse(process.env);
 
-const SUPABASE_ANON_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRsd2Vmb2V0eHB0Ym5qZ21kd2hiIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzA5NDYzMDcsImV4cCI6MTk4NjUyMjMwN30.tOkLo2YYVxVNI4-kSajFaMzpQcqyNlzsmGSEuZLrzJg";
-
-const SUPABASE_URL = "https://tlwefoetxptbnjgmdwhb.supabase.co";
-
-const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+const client = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE, {
   auth: {
     persistSession: false,
+    autoRefreshToken: false,
+  },
+  db: {
+    schema: "storage",
   },
 });
 
 const app = express();
 
+const customSubDomains = {
+  "auth.depulso.co": "auth",
+  "depulso.co": "app",
+};
+
 app.get(
   "*",
   async (req, _, next) => {
-    req.depulsoProject = req.hostname.split(hostname)[0];
+    if (customSubDomains[req.hostname]) {
+      req.depulsoProject = customSubDomains[req.hostname];
+    } else {
+      req.depulsoProject = req.hostname.split(env.DEPULSO_URL_SUFFIX)[0];
+    }
 
     // For root
     if (req.path === "/") {
       const { data, error } = await client.storage
-        .from(bucket)
+        .from(env.SUPABASE_BUCKET_ID)
         .list(req.depulsoProject, {
           // search is not exact, need to filter again to find exact match
           search: "index.html",
@@ -62,7 +78,7 @@ app.get(
     const basename = path.basename(req.path);
 
     const { data: dirData, error: dirError } = await client.storage
-      .from(bucket)
+      .from(env.SUPABASE_BUCKET_ID)
       .list(`${req.depulsoProject}${dirname}`, {
         search: basename,
       });
@@ -85,7 +101,7 @@ app.get(
       }
 
       const { data, error } = await client.storage
-        .from(bucket)
+        .from(env.SUPABASE_BUCKET_ID)
         .list(`${req.depulsoProject}${req.path}`, {
           search: "index.html",
         });
@@ -116,12 +132,12 @@ app.get(
     next();
   },
   createProxyMiddleware({
-    target,
+    target: env.SUPABASE_URL,
     changeOrigin: true,
     pathRewrite: (_, req) =>
-      `/storage/v1/object/public/${bucket}/${req.depulsoProject}${
-        req.depulsoFilePath ? req.depulsoFilePath : ""
-      }`,
+      `/storage/v1/object/public/${env.SUPABASE_BUCKET_ID}/${
+        req.depulsoProject
+      }${req.depulsoFilePath ? req.depulsoFilePath : ""}`,
     onProxyReq: (_, r) => console.log(r.url),
     selfHandleResponse: true,
     onProxyRes: responseInterceptor((responseBuffer, _, req, res) => {

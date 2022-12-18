@@ -10,7 +10,6 @@ const envSchema = z.object({
   SUPABASE_URL: z.string().url(),
   SUPABASE_SERVICE_ROLE: z.string().min(1),
   SUPABASE_BUCKET_ID: z.string().min(1),
-  API_ORIGIN: z.string().url(),
   WEB_ORIGIN: z.string().url(),
   MAX_DEPLOYMENT_SIZE: z.string().min(1),
   MAX_PROJECTS_LIMIT: z.string().min(1),
@@ -24,13 +23,11 @@ import supabaseAuthMiddleware from "./middlewares/supabaseAuth";
 
 const app = express();
 
-if (env.WEB_ORIGIN) {
-  app.use(
-    cors({
-      origin: env.WEB_ORIGIN,
-    })
-  );
-}
+app.use(
+  cors({
+    origin: env.WEB_ORIGIN,
+  })
+);
 
 app.use(express.json());
 
@@ -42,8 +39,8 @@ app.get("/config", (_: Request, res: Response) => {
   res.json({
     supabaseURL: env.SUPABASE_URL,
     supabaseAnonKey: env.SUPABASE_ANON_KEY,
-    maxDeploymentSize: env.MAX_DEPLOYMENT_SIZE,
-    maxProjectsLimit: env.MAX_PROJECTS_LIMIT,
+    maxDeploymentSize: Number(env.MAX_DEPLOYMENT_SIZE),
+    maxProjectsLimit: Number(env.MAX_PROJECTS_LIMIT),
   });
 });
 
