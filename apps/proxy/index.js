@@ -8,6 +8,7 @@ const {
 const { createClient } = require("@supabase/supabase-js");
 const { z } = require("zod");
 const dotenv = require("dotenv");
+const morgan = require("morgan");
 
 dotenv.config();
 
@@ -32,6 +33,12 @@ const client = createClient(env.SUPABASE_URL, env.SUPABASE_SERVICE_ROLE, {
 });
 
 const app = express();
+
+morgan.token("url", function (req) {
+  return req.hostname + req.originalUrl;
+});
+
+app.use(morgan("tiny"));
 
 const customSubDomains = {
   "auth.depulso.co": "auth",
@@ -138,7 +145,6 @@ app.get(
       `/storage/v1/object/public/${env.SUPABASE_BUCKET_ID}/${
         req.depulsoProject
       }${req.depulsoFilePath ? req.depulsoFilePath : ""}`,
-    onProxyReq: (_, r) => console.log(r.url),
     selfHandleResponse: true,
     onProxyRes: responseInterceptor((responseBuffer, _, req, res) => {
       if (req.depulsoMimeType) {
@@ -150,6 +156,13 @@ app.get(
   })
 );
 
-app.listen(process.env.PORT, () =>
-  console.log(`Listening... ${process.env.PORT}`)
+const server = app.listen(process.env.PORT, () =>
+  console.log(`Listening... PORT:${process.env.PORT}`)
 );
+
+process.on("SIGINT", () => {
+  console.log("SIGINT signal received: closing HTTP server");
+  server.close(() => {
+    console.log("HTTP server closed");
+  });
+});

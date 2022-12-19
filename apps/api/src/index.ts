@@ -2,6 +2,8 @@ import * as dotenv from "dotenv";
 import { z } from "zod";
 import express, { Request, Response } from "express";
 import cors from "cors";
+import morgan from "morgan";
+import compression from "compression";
 
 dotenv.config();
 
@@ -29,6 +31,9 @@ app.use(
   })
 );
 
+app.use(morgan("tiny"));
+app.use(compression());
+
 app.use(express.json());
 
 app.get("/", (_: Request, res: Response) => {
@@ -46,6 +51,13 @@ app.get("/config", (_: Request, res: Response) => {
 
 app.use("/projects", supabaseAuthMiddleware, projectsRouter);
 
-app.listen(env.PORT, () => {
-  console.log(`Listening... ${env.PORT}`);
+const server = app.listen(env.PORT, () => {
+  console.log(`Listening... PORT:${env.PORT}`);
+});
+
+process.on("SIGINT", () => {
+  console.log("SIGINT signal received: closing HTTP server");
+  server.close(() => {
+    console.log("HTTP server closed");
+  });
 });

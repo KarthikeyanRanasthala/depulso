@@ -11,6 +11,10 @@
     "dotenv": "16.0.3",
     "express": "4.18.2",
     "http-proxy-middleware": "2.0.6",
-    "zod": "3.20.2"
+    "zod": "3.20.2",
+    "morgan": "1.10.0"
+  },
+  "devDependencies": {
+    "@types/morgan": "1.9.3"
   }
 }
