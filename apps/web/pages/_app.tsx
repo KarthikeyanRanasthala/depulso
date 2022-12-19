@@ -38,7 +38,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           property="og:description"
           content="Easy, one command deployments with free depulso.site subdomains"
         />
-        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:image" content="https://depulso.co/og-image.png" />
 
         <meta
           property="twitter:title"
@@ -48,7 +48,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           property="twitter:description"
           content="Easy, one command deployments with free depulso.site subdomains"
         />
-        <meta property="twitter:image" content="/og-image.png" />
+        <meta
+          property="twitter:image"
+          content="https://depulso.co/og-image.png"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
