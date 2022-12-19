@@ -14,6 +14,8 @@ import type { User } from "@supabase/supabase-js";
 
 const router = Router();
 
+const projectNameRegexp = /^[a-z-]+$/;
+
 const generateProjectName = () =>
   uniqueNamesGenerator({
     dictionaries: [adjectives, colors, animals],
@@ -37,7 +39,14 @@ const canCreateProject = async (user: User, requestQuery: unknown) => {
   }
 
   const querySchema = z.object({
-    name: z.string().min(4),
+    name: z
+      .string()
+      .min(4)
+      .regex(
+        projectNameRegexp,
+        "Project name can only contain lowecase alphabets and hyphens"
+      )
+      .max(30),
   });
 
   const query = querySchema.parse(requestQuery);
