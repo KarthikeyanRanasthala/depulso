@@ -9,6 +9,7 @@ const Instructions = () => {
           gap: "16px",
           display: "flex",
           flexDirection: "column",
+          alignItems: "center",
           "@xsMin": {
             padding: "72px 0",
             margin: "24px auto",
@@ -42,18 +43,23 @@ const Instructions = () => {
             <code>npx depulso deploy</code>
           </Card.Body>
         </Card>
-        {/* <video
-          autoPlay
+        <iframe
           className="video"
-          src="https://dev.voyage/video.mp4"
-        ></video> */}
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/wHNnb_IW4tE"
+          title="YouTube video player"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
       </Container>
 
       <style jsx>{`
         .video {
           max-width: 100%;
           border-radius: 10px;
-          box-shadow: 0 4px 14px 0 #571d91;
+          box-shadow: 0 0 0 1px #333;
         }
 
         @media (min-width: 650px) {
