@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid } from "@nextui-org/react";
+import { Button, Container } from "@nextui-org/react";
 import {
   useSessionContext,
   useSupabaseClient,
@@ -38,31 +38,49 @@ const Dashboard = () => {
 
   return (
     <>
-      <Grid.Container
-        direction="column"
-        gap={1}
-        css={{ maxWidth: "1200px", margin: "auto", pt: "24px" }}
+      <Container
+        css={{
+          maxWidth: "1200px",
+          margin: "auto",
+          p: "24px",
+          minHeight: "calc(100vh - 142px)",
+          display: "flex",
+          gap: "24px",
+          flexDirection: "column",
+        }}
       >
-        <Grid css={{ alignSelf: "flex-end", pr: "12px" }}>
-          <Button
-            color="gradient"
-            auto
-            onClick={handleModal}
-            css={{ zIndex: 1 }}
-          >
-            Create new project
-          </Button>
-        </Grid>
-        <Grid>
-          <Grid.Container gap={2} justify="center">
-            {deployments?.map((el) => (
-              <Grid key={el.name} xs={4}>
-                <ProjectCard name={el.name} getDeployments={getDeployments} />
-              </Grid>
-            ))}
-          </Grid.Container>
-        </Grid>
-      </Grid.Container>
+        <Button
+          color="gradient"
+          auto
+          bordered
+          shadow
+          onClick={handleModal}
+          css={{ zIndex: 1, alignSelf: "flex-end" }}
+        >
+          Create new project
+        </Button>
+
+        <Container
+          css={{
+            display: "flex",
+            gap: "16px",
+            flexDirection: "column",
+            padding: 0,
+            maxWidth: "100%",
+            "@xsMin": {
+              flexDirection: "row",
+            },
+          }}
+        >
+          {deployments?.map((el) => (
+            <ProjectCard
+              key={el.name}
+              name={el.name}
+              getDeployments={getDeployments}
+            />
+          ))}
+        </Container>
+      </Container>
 
       <CreateProjectModal
         handleModal={handleModal}
