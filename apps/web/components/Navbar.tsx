@@ -34,7 +34,7 @@ const collapseItems = [
 const Navbar = () => {
   const user = useUser();
   const router = useRouter();
-  const isDashboard = router.asPath === "/dashboard";
+  const isDashboard = router.asPath.includes("dashboard");
 
   const hash = router.asPath?.split("#")[1] || "";
 
