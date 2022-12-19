@@ -52,6 +52,12 @@ const canCreateProject = async (user: User, requestQuery: unknown) => {
   const parsedQuery = querySchema.safeParse(requestQuery);
 
   if (parsedQuery.success) {
+    const isBlackListed = constants.blacklist.includes(parsedQuery.data.name);
+
+    if (isBlackListed) {
+      return { canCreate: false, message: "Not allowed" };
+    }
+
     const { data, error } = await admin.storage
       .from(env.SUPABASE_BUCKET_ID)
       .list(parsedQuery.data.name, {
