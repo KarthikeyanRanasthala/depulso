@@ -34,7 +34,13 @@ const ProjectCard: React.FC<Props> = (props) => {
   };
 
   return (
-    <Card css={{ mw: "400px" }} variant="bordered">
+    <Card
+      css={{
+        "@xsMin": { width: "calc(50% - 12px)" },
+        "@smMin": { width: "calc(33.333% - 12px)" },
+      }}
+      variant="bordered"
+    >
       <Card.Header>
         <Grid.Container wrap="wrap">
           <Grid xs={12}>
@@ -75,7 +81,11 @@ const ProjectCard: React.FC<Props> = (props) => {
           color="error"
           bordered
           ghost
-          css={{ alignSelf: "flex-start", minWidth: "fit-content" }}
+          css={{
+            alignSelf: "flex-start",
+            minWidth: "fit-content",
+            color: "White",
+          }}
           onPress={() => handleDelete(name)}
         >
           {isDeleting ? <Loading size="sm" color="white" /> : "Delete"}

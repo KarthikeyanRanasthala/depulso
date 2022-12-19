@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Grid } from "@nextui-org/react";
+import { Button, Container, Loading } from "@nextui-org/react";
 import {
   useSessionContext,
   useSupabaseClient,
@@ -18,6 +18,8 @@ const Dashboard = () => {
     router.push("/");
   }
 
+  const [isDeploymentsLoading, setDeploymentsLoading] = useState(false);
+
   const [deployments, setDeployments] = useState<Array<{ name: string }>>([]);
   const [modalVisiblity, setModalVisiblity] = React.useState(false);
 
@@ -28,8 +30,12 @@ const Dashboard = () => {
   };
 
   const getDeployments = async () => {
-    const { data } = await client.storage.from("deployments").list("");
-    setDeployments(data);
+    try {
+      setDeploymentsLoading(true);
+      const { data } = await client.storage.from("deployments").list("");
+      setDeployments(data);
+      setDeploymentsLoading(false);
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -38,31 +44,62 @@ const Dashboard = () => {
 
   return (
     <>
-      <Grid.Container
-        direction="column"
-        gap={1}
-        css={{ maxWidth: "1200px", margin: "auto", pt: "24px" }}
+      <Container
+        css={{
+          maxWidth: "1200px",
+          margin: "auto",
+          p: "24px",
+          minHeight: "calc(100vh - 142px)",
+          display: "flex",
+          gap: "24px",
+          flexDirection: "column",
+        }}
       >
-        <Grid css={{ alignSelf: "flex-end", pr: "12px" }}>
-          <Button
-            color="gradient"
-            auto
-            onClick={handleModal}
-            css={{ zIndex: 1 }}
+        <Button
+          color="gradient"
+          auto
+          bordered
+          shadow
+          onClick={handleModal}
+          css={{ zIndex: 1, alignSelf: "flex-end" }}
+        >
+          Create new project
+        </Button>
+
+        {isDeploymentsLoading ? (
+          <Loading
+            color={"secondary"}
+            size="lg"
+            css={{
+              height: "calc(100vh - 280px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
+        ) : (
+          <Container
+            css={{
+              display: "flex",
+              gap: "16px",
+              flexDirection: "column",
+              padding: 0,
+              maxWidth: "100%",
+              "@xsMin": {
+                flexDirection: "row",
+              },
+            }}
           >
-            Create new project
-          </Button>
-        </Grid>
-        <Grid>
-          <Grid.Container gap={2} justify="center">
             {deployments?.map((el) => (
-              <Grid key={el.name} xs={4}>
-                <ProjectCard name={el.name} getDeployments={getDeployments} />
-              </Grid>
+              <ProjectCard
+                key={el.name}
+                name={el.name}
+                getDeployments={getDeployments}
+              />
             ))}
-          </Grid.Container>
-        </Grid>
-      </Grid.Container>
+          </Container>
+        )}
+      </Container>
 
       <CreateProjectModal
         handleModal={handleModal}

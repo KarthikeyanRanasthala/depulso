@@ -8,13 +8,35 @@ import {
 } from "@nextui-org/react";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { default as NextLink } from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
-const collapseItems = ["Features", "Docs", "GitHub"];
+const collapseItems = [
+  {
+    name: "Home",
+    link: "/",
+    isTargetBlank: false,
+  },
+  {
+    name: "Features",
+    link: "#features",
+    isTargetBlank: false,
+  },
+  {
+    name: "GitHub",
+    link: "https://github.com/KarthikeyanRanasthala/depulso",
+    isTargetBlank: true,
+  },
+];
 
 // @todo: add error state
 
 const Navbar = () => {
   const user = useUser();
+  const router = useRouter();
+  const isDashboard = router.asPath === "/dashboard";
+
+  const hash = router.asPath?.split("#")[1] || "";
 
   const client = useSupabaseClient();
   const onLogin = async () => {
@@ -26,13 +48,24 @@ const Navbar = () => {
 
   const handleDropdownAction = async (actionName: string) => {
     if (actionName === "logout") {
-      const { error } = await client.auth.signOut();
+      await client.auth.signOut();
     }
+  };
+
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen((prev) => !prev);
   };
 
   return (
     <NextUINavbar isBordered variant="sticky" maxWidth="fluid">
-      <NextUINavbar.Toggle showIn="xs" />
+      {isDashboard ? null : (
+        <NextUINavbar.Toggle
+          showIn="xs"
+          isSelected={isOpen}
+          onChange={handleOpen}
+        />
+      )}
       <NextUINavbar.Brand
         css={{
           "@xs": {
@@ -40,22 +73,50 @@ const Navbar = () => {
           },
         }}
       >
-        <Text b color="inherit" size="$xl">
-          Depulso
-        </Text>
+        <NextLink href="/">
+          <Text
+            css={{
+              fontWeight: "$extrabold",
+              letterSpacing: "4px",
+              color: "White",
+              display: isDashboard ? "block" : "none",
+              "@xsMin": {
+                display: "block",
+              },
+            }}
+            color="inherit"
+            size="24px"
+          >
+            Depulso
+          </Text>
+        </NextLink>
       </NextUINavbar.Brand>
-      <NextUINavbar.Content
-        enableCursorHighlight
-        activeColor="secondary"
-        hideIn="xs"
-        variant="highlight-rounded"
-      >
-        <NextUINavbar.Link isActive href="#">
-          Features
-        </NextUINavbar.Link>
-        <NextUINavbar.Link href="#">Docs</NextUINavbar.Link>
-        <NextUINavbar.Link href="#">Github</NextUINavbar.Link>
-      </NextUINavbar.Content>
+      {isDashboard ? null : (
+        <NextUINavbar.Content
+          enableCursorHighlight
+          activeColor="secondary"
+          hideIn="xs"
+          variant="highlight-rounded"
+        >
+          <NextLink href="/" legacyBehavior passHref>
+            <NextUINavbar.Link isActive={!hash} href="/">
+              Home
+            </NextUINavbar.Link>
+          </NextLink>
+          <NextLink href="#features" legacyBehavior passHref>
+            <NextUINavbar.Link isActive={hash === "features"} href="#features">
+              Features
+            </NextUINavbar.Link>
+          </NextLink>
+          <NextUINavbar.Link
+            target={"_blank"}
+            rel="noopener noreferrer"
+            href="https://github.com/KarthikeyanRanasthala/depulso"
+          >
+            Github
+          </NextUINavbar.Link>
+        </NextUINavbar.Content>
+      )}
       <NextUINavbar.Content
         css={{
           "@xs": {
@@ -109,26 +170,44 @@ const Navbar = () => {
             </Dropdown.Menu>
           </Dropdown>
         ) : (
-          <Button onClick={onLogin} color={"secondary"}>
-            Login
+          <Button onClick={onLogin} bordered color="gradient" auto shadow>
+            <Text css={{ display: "none", "@xsMin": { display: "block" } }}>
+              Login with GitHub
+            </Text>
+            <Text css={{ display: "block", "@xsMin": { display: "none" } }}>
+              Login
+            </Text>
           </Button>
         )}
       </NextUINavbar.Content>
-      <NextUINavbar.Collapse>
-        {collapseItems.map((item) => (
-          <NextUINavbar.CollapseItem key={item} activeColor="secondary">
-            <Link
-              color="inherit"
-              css={{
-                minWidth: "100%",
-              }}
-              href="#"
-            >
-              {item}
-            </Link>
-          </NextUINavbar.CollapseItem>
-        ))}
-      </NextUINavbar.Collapse>
+      {isOpen ? (
+        <NextUINavbar.Collapse>
+          {collapseItems.map((item) => (
+            <NextUINavbar.CollapseItem key={item.name} activeColor="secondary">
+              {item.isTargetBlank ? (
+                <Link
+                  color="inherit"
+                  css={{
+                    minWidth: "100%",
+                  }}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleOpen}
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <NextLink onClick={handleOpen} href={item.link}>
+                  <Text size={"18px"} css={{ color: "White" }}>
+                    {item.name}
+                  </Text>
+                </NextLink>
+              )}
+            </NextUINavbar.CollapseItem>
+          ))}
+        </NextUINavbar.Collapse>
+      ) : null}
     </NextUINavbar>
   );
 };
