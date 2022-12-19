@@ -15,7 +15,7 @@ export const onDeploy = async () => {
   if (
     !projectConfig ||
     !projectConfig?.outputDirectory ||
-    !projectConfig?.outputDirectory
+    !projectConfig?.project
   ) {
     const { shouldInit } = await inquirer.prompt([
       {
