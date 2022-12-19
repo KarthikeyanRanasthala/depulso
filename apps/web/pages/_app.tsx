@@ -4,6 +4,7 @@ import { NextUIProvider } from "@nextui-org/react";
 import { createTheme } from "@nextui-org/react";
 import { createClient } from "@supabase/supabase-js";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import Navbar from "../components/Navbar";
 
@@ -22,13 +23,20 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       <Head>
         <title>Depulso</title>
       </Head>
-
-      <SessionContextProvider supabaseClient={supabase}>
+      <NextThemesProvider
+        defaultTheme="dark"
+        attribute="class"
+        value={{
+          dark: darkTheme.className,
+        }}
+      >
         <NextUIProvider theme={darkTheme}>
-          <Navbar />
-          <Component {...pageProps} />
+          <SessionContextProvider supabaseClient={supabase}>
+            <Navbar />
+            <Component {...pageProps} />
+          </SessionContextProvider>
         </NextUIProvider>
-      </SessionContextProvider>
+      </NextThemesProvider>
     </>
   );
 }
