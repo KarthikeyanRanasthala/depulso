@@ -1,4 +1,4 @@
-import { Container, Text } from "@nextui-org/react";
+import { Container, Link, Text } from "@nextui-org/react";
 import Image from "next/image";
 
 const HeroComponent = () => {
@@ -98,15 +98,21 @@ const HeroComponent = () => {
         <Text b size={"$lg"} css={{ textAlign: "center" }}>
           Built with
         </Text>
-        <Image
-          alt="supabase logo"
-          src={
-            "https://supabase.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsupabase-logo-wordmark--dark.53d797e9.png&w=384&q=75"
-          }
-          unoptimized
-          width={120}
-          height={24}
-        />
+        <Link
+          href="https://supabase.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Image
+            alt="supabase logo"
+            src={
+              "https://supabase.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fsupabase-logo-wordmark--dark.53d797e9.png&w=384&q=75"
+            }
+            unoptimized
+            width={120}
+            height={24}
+          />
+        </Link>
       </Container>
     </>
   );
