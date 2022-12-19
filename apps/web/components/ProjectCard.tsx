@@ -54,7 +54,7 @@ const ProjectCard: React.FC<Props> = (props) => {
                 <Link block color="text" css={{ p: "$4" }}>
                   <a
                     style={{ height: "18px", width: "18px" }}
-                    href={`https://${name}.depulso.app`}
+                    href={`https://${name}.depulso.site`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -71,7 +71,7 @@ const ProjectCard: React.FC<Props> = (props) => {
             </Grid.Container>
           </Grid>
           <Grid xs={12}>
-            <Text css={{ color: "$accents8" }}>{name}.depulso.app</Text>
+            <Text css={{ color: "$accents8" }}>{name}.depulso.site</Text>
           </Grid>
         </Grid.Container>
       </Card.Header>
