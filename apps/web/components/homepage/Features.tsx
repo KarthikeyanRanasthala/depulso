@@ -9,6 +9,7 @@ const features = [
 const Features = () => {
   return (
     <Container
+      id="features"
       display="flex"
       direction="column"
       css={{

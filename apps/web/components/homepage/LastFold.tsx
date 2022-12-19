@@ -59,14 +59,10 @@ const LastFold = () => {
       ) : (
         <Button
           shadow
-          size={"lg"}
+          bordered
           color="gradient"
           auto
-          css={{
-            borderRadius: "12px",
-            fontWeight: "$bold",
-            "@xsMin": { fontSize: "$xl", padding: "12px 20px" },
-          }}
+          size={"xl"}
           onClick={onLogin}
         >
           Login with GitHub
