@@ -5,10 +5,17 @@ const HeroComponent = () => {
   return (
     <>
       <Container
-        css={{ padding: "24px 0" }}
-        direction="column"
-        display="flex"
-        alignItems="center"
+        css={{
+          padding: "24px 0",
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          "@xsMin": {
+            flexDirection: "row",
+            gap: "16px",
+            paddingTop: "64px",
+          },
+        }}
       >
         <Text
           h1
@@ -18,6 +25,11 @@ const HeroComponent = () => {
             textTransform: "capitalize",
             margin: 0,
             textAlign: "center",
+            "@xsMin": {
+              fontSize: "$8xl",
+              lineHeight: "1.1",
+              letterSpacing: "0",
+            },
           }}
           weight="bold"
         >
@@ -31,6 +43,11 @@ const HeroComponent = () => {
             textTransform: "capitalize",
             margin: 0,
             textAlign: "center",
+            "@xsMin": {
+              fontSize: "$8xl",
+              lineHeight: "1.1",
+              letterSpacing: "0",
+            },
           }}
           weight="bold"
         >
@@ -44,13 +61,26 @@ const HeroComponent = () => {
             textTransform: "capitalize",
             margin: 0,
             textAlign: "center",
+            "@xsMin": {
+              fontSize: "$8xl",
+              lineHeight: "1.1",
+              letterSpacing: "0",
+            },
           }}
           weight="bold"
         >
           in Seconds
         </Text>
       </Container>
-      <Text size={"$lg"} css={{ textAlign: "center" }}>
+      <Text
+        size={"$lg"}
+        css={{
+          textAlign: "center",
+          "@xsMin": {
+            fontSize: "28px",
+          },
+        }}
+      >
         Easy, one command deployments with free{" "}
         <Text css={{ fontWeight: "$extrabold" }} b>
           depulso.site
@@ -65,7 +95,7 @@ const HeroComponent = () => {
         justify="center"
         alignItems="center"
       >
-        <Text size={"$lg"} css={{ textAlign: "center" }}>
+        <Text b size={"$lg"} css={{ textAlign: "center" }}>
           Built with
         </Text>
         <Image
