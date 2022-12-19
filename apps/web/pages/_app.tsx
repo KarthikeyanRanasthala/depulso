@@ -24,7 +24,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <title>Depulso | Deploy your static site in seconds</title>
         <meta
           name="description"
-          content="Easy, one command deployments with free depulso.site subdomains."
+          content="Easy, one command deployments with free depulso.site subdomains"
         />
 
         <meta property="og:type" content="website" />
@@ -35,7 +35,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta
           property="og:description"
-          content="Easy, one command deployments with free depulso.site subdomains."
+          content="Easy, one command deployments with free depulso.site subdomains"
         />
         <meta property="og:image" content="/og-image.png" />
 
@@ -45,7 +45,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta
           property="twitter:description"
-          content="Easy, one command deployments with free depulso.site subdomains."
+          content="Easy, one command deployments with free depulso.site subdomains"
         />
         <meta property="twitter:image" content="/og-image.png" />
         <link
