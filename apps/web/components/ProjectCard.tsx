@@ -1,7 +1,7 @@
 import { Button, Card, Grid, Link, Loading, Text } from "@nextui-org/react";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import { useState } from "react";
+import axios from "axios";
 
 interface Props {
   getDeployments: () => Promise<void>;
@@ -10,19 +10,16 @@ interface Props {
 
 const ProjectCard: React.FC<Props> = (props) => {
   const { name, getDeployments } = props;
-  const client = useSupabaseClient();
+
   const [isDeleting, setDeleting] = useState(false);
 
   const handleDelete = async (name: string) => {
     try {
       setDeleting(true);
-      const { data } = await client.storage.from("deployments").list(name);
 
-      for (let i = 0; i < data.length; i++) {
-        await client.storage
-          .from("deployments")
-          .remove([`${name}/${data[i].name}`]);
-      }
+      await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_ORIGIN}/projects?name=${name}`
+      );
 
       await getDeployments();
       setDeleting(false);
