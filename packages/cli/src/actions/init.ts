@@ -12,7 +12,7 @@ import { isNextJS } from "../utils";
 import { PROJECT_CONFIG_FILE_NAME } from "../constants";
 import { getProjectConfig, getSavedTokens } from "../service";
 import { onLogin } from "./login";
-import { client } from "../supabase";
+import { getSupabaseClient } from "../supabase";
 
 export const onPromptForLogin = async () => {
   const { shouldLogin } = await inquirer.prompt([
@@ -73,6 +73,8 @@ export const onInit = async () => {
     const tokens = getSavedTokens();
 
     if (tokens) {
+      const client = await getSupabaseClient();
+
       const {
         error,
         data: { session },
@@ -92,7 +94,7 @@ export const onInit = async () => {
 
       try {
         const response = await axios.get<{ suggestion: string }>(
-          "http://localhost:1234/projects/suggestion",
+          "https://api.depulso.co/projects/suggestion",
           {
             headers: {
               Authorization: `Bearer ${session?.access_token}`,
@@ -133,7 +135,7 @@ export const onInit = async () => {
         creatingProject.start();
 
         await axios.post(
-          "http://localhost:1234/projects",
+          "https://api.depulso.co/projects",
           {
             name: project,
           },

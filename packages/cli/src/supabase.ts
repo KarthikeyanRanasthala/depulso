@@ -1,9 +1,21 @@
 import { createClient } from "@supabase/supabase-js";
 
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from "./constants";
+import { getRemoteConfig } from "./service";
 
-export const client = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: {
-    persistSession: false,
-  },
-});
+let cachedClient: ReturnType<typeof createClient> | null = null;
+
+export const getSupabaseClient = async () => {
+  if (cachedClient) {
+    return cachedClient;
+  }
+
+  const config = await getRemoteConfig();
+
+  cachedClient = createClient(config.supabaseURL, config.supabaseAnonKey, {
+    auth: {
+      persistSession: false,
+    },
+  });
+
+  return cachedClient;
+};

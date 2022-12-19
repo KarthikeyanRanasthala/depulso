@@ -42,7 +42,7 @@ const Navbar = () => {
   const onLogin = async () => {
     await client.auth.signInWithOAuth({
       provider: "github",
-      options: { redirectTo: `http://${window.location.origin}/dashboard/` },
+      options: { redirectTo: `${window.location.origin}/dashboard/` },
     });
   };
 

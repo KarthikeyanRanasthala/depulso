@@ -4,6 +4,7 @@ import { Divider, NextUIProvider } from "@nextui-org/react";
 import { createTheme } from "@nextui-org/react";
 import { createClient } from "@supabase/supabase-js";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -67,15 +68,22 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         />
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
-
-      <SessionContextProvider supabaseClient={supabase}>
+      <NextThemesProvider
+        defaultTheme="dark"
+        attribute="class"
+        value={{
+          dark: darkTheme.className,
+        }}
+      >
         <NextUIProvider theme={darkTheme}>
-          <Navbar />
-          <Component {...pageProps} />
-          <Divider />
-          <Footer />
+          <SessionContextProvider supabaseClient={supabase}>
+            <Navbar />
+            <Component {...pageProps} />
+            <Divider />
+            <Footer />
+          </SessionContextProvider>
         </NextUIProvider>
-      </SessionContextProvider>
+      </NextThemesProvider>
     </>
   );
 }

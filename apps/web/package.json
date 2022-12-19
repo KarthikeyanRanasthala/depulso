@@ -17,7 +17,8 @@
     "@supabase/supabase-js": "2.2.1",
     "@nextui-org/react": "1.0.0-beta.10",
     "axios": "1.2.1",
-    "use-debounce": "9.0.2"
+    "use-debounce": "9.0.2",
+    "next-themes": "0.2.1"
   },
   "devDependencies": {
     "@types/react": "18.0.26",
