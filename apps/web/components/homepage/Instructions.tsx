@@ -27,17 +27,26 @@ const Instructions = () => {
             },
           }}
         >
-          <Card.Body>
-            <code>A hoverable card.</code>
-            <Text>A hoverable card.</Text>
-            <code>A hoverable card.</code>
+          <Card.Body css={{ gap: "$6" }}>
+            <Text>To install the latest version of the Depulso CLI,</Text>
+            <code>npm install -g depulso</code>
+            <Text>Login to the CLI through GitHub,</Text>
+            <code>npx depulso login</code>
+            <Text>Initialize a new depulso project</Text>
+            <code>npx depulso init</code>
+            <code>
+              ? Build output directory (framework gets auto-detected):
+              <br />? Project name (static-in-seconds):
+            </code>
+            <Text>Deploy 🚀🚀</Text>
+            <code>npx depulso deploy</code>
           </Card.Body>
         </Card>
-        <video
+        {/* <video
           autoPlay
           className="video"
           src="https://dev.voyage/video.mp4"
-        ></video>
+        ></video> */}
       </Container>
 
       <style jsx>{`
