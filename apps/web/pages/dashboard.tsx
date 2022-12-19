@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Container } from "@nextui-org/react";
+import { Button, Container, Loading } from "@nextui-org/react";
 import {
   useSessionContext,
   useSupabaseClient,
@@ -18,6 +18,8 @@ const Dashboard = () => {
     router.push("/");
   }
 
+  const [isDeploymentsLoading, setDeploymentsLoading] = useState(false);
+
   const [deployments, setDeployments] = useState<Array<{ name: string }>>([]);
   const [modalVisiblity, setModalVisiblity] = React.useState(false);
 
@@ -28,8 +30,12 @@ const Dashboard = () => {
   };
 
   const getDeployments = async () => {
-    const { data } = await client.storage.from("deployments").list("");
-    setDeployments(data);
+    try {
+      setDeploymentsLoading(true);
+      const { data } = await client.storage.from("deployments").list("");
+      setDeployments(data);
+      setDeploymentsLoading(false);
+    } catch (err) {}
   };
 
   useEffect(() => {
@@ -60,26 +66,39 @@ const Dashboard = () => {
           Create new project
         </Button>
 
-        <Container
-          css={{
-            display: "flex",
-            gap: "16px",
-            flexDirection: "column",
-            padding: 0,
-            maxWidth: "100%",
-            "@xsMin": {
-              flexDirection: "row",
-            },
-          }}
-        >
-          {deployments?.map((el) => (
-            <ProjectCard
-              key={el.name}
-              name={el.name}
-              getDeployments={getDeployments}
-            />
-          ))}
-        </Container>
+        {isDeploymentsLoading ? (
+          <Loading
+            color={"secondary"}
+            size="lg"
+            css={{
+              height: "calc(100vh - 280px)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          />
+        ) : (
+          <Container
+            css={{
+              display: "flex",
+              gap: "16px",
+              flexDirection: "column",
+              padding: 0,
+              maxWidth: "100%",
+              "@xsMin": {
+                flexDirection: "row",
+              },
+            }}
+          >
+            {deployments?.map((el) => (
+              <ProjectCard
+                key={el.name}
+                name={el.name}
+                getDeployments={getDeployments}
+              />
+            ))}
+          </Container>
+        )}
       </Container>
 
       <CreateProjectModal
