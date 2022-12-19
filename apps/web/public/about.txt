@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Stylish
+- Font Author: Copyright (c) 1992-2018 AsiaSoft Inc. Seoul Korea All Rights Reserved.
+- Font Source: http://fonts.gstatic.com/s/stylish/v20/m8JSjfhPYriQkk7-fo35dLxEdmo.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
