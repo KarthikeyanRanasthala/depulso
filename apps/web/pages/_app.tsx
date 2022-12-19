@@ -8,6 +8,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import Script from "next/script";
 
 const darkTheme = createTheme({
   type: "dark",
@@ -88,6 +89,18 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           </SessionContextProvider>
         </NextUIProvider>
       </NextThemesProvider>
+      {process.env.NODE_ENV === "production" && (
+        <>
+          <Script
+            strategy="afterInteractive"
+            id="gtag-script"
+            src="https://www.googletagmanager.com/gtag/js?id=G-2MX9B5966H"
+          ></Script>
+          <Script strategy="afterInteractive" id="gtag-inline-script">
+            {`window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-2MX9B5966H')`}
+          </Script>
+        </>
+      )}
     </>
   );
 }
