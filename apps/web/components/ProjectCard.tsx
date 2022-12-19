@@ -77,7 +77,11 @@ const ProjectCard: React.FC<Props> = (props) => {
           color="error"
           bordered
           ghost
-          css={{ alignSelf: "flex-start", minWidth: "fit-content" }}
+          css={{
+            alignSelf: "flex-start",
+            minWidth: "fit-content",
+            color: "White",
+          }}
           onPress={() => handleDelete(name)}
         >
           {isDeleting ? <Loading size="sm" color="white" /> : "Delete"}

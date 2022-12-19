@@ -34,6 +34,7 @@ const collapseItems = [
 const Navbar = () => {
   const user = useUser();
   const router = useRouter();
+  const isDashboard = router.asPath === "/dashboard";
 
   const hash = router.asPath?.split("#")[1] || "";
 
@@ -58,11 +59,13 @@ const Navbar = () => {
 
   return (
     <NextUINavbar isBordered variant="sticky" maxWidth="fluid">
-      <NextUINavbar.Toggle
-        showIn="xs"
-        isSelected={isOpen}
-        onChange={handleOpen}
-      />
+      {isDashboard ? null : (
+        <NextUINavbar.Toggle
+          showIn="xs"
+          isSelected={isOpen}
+          onChange={handleOpen}
+        />
+      )}
       <NextUINavbar.Brand
         css={{
           "@xs": {
@@ -70,34 +73,50 @@ const Navbar = () => {
           },
         }}
       >
-        <Text b color="inherit" size="$xl">
-          Depulso
-        </Text>
+        <NextLink href="/">
+          <Text
+            css={{
+              fontWeight: "$extrabold",
+              letterSpacing: "4px",
+              color: "White",
+              display: isDashboard ? "block" : "none",
+              "@xsMin": {
+                display: "block",
+              },
+            }}
+            color="inherit"
+            size="24px"
+          >
+            Depulso
+          </Text>
+        </NextLink>
       </NextUINavbar.Brand>
-      <NextUINavbar.Content
-        enableCursorHighlight
-        activeColor="secondary"
-        hideIn="xs"
-        variant="highlight-rounded"
-      >
-        <NextLink href="/" legacyBehavior passHref>
-          <NextUINavbar.Link isActive={!hash} href="/">
-            Home
-          </NextUINavbar.Link>
-        </NextLink>
-        <NextLink href="#features" legacyBehavior passHref>
-          <NextUINavbar.Link isActive={hash === "features"} href="#features">
-            Features
-          </NextUINavbar.Link>
-        </NextLink>
-        <NextUINavbar.Link
-          target={"_blank"}
-          rel="noopener noreferrer"
-          href="https://github.com/KarthikeyanRanasthala/depulso"
+      {isDashboard ? null : (
+        <NextUINavbar.Content
+          enableCursorHighlight
+          activeColor="secondary"
+          hideIn="xs"
+          variant="highlight-rounded"
         >
-          Github
-        </NextUINavbar.Link>
-      </NextUINavbar.Content>
+          <NextLink href="/" legacyBehavior passHref>
+            <NextUINavbar.Link isActive={!hash} href="/">
+              Home
+            </NextUINavbar.Link>
+          </NextLink>
+          <NextLink href="#features" legacyBehavior passHref>
+            <NextUINavbar.Link isActive={hash === "features"} href="#features">
+              Features
+            </NextUINavbar.Link>
+          </NextLink>
+          <NextUINavbar.Link
+            target={"_blank"}
+            rel="noopener noreferrer"
+            href="https://github.com/KarthikeyanRanasthala/depulso"
+          >
+            Github
+          </NextUINavbar.Link>
+        </NextUINavbar.Content>
+      )}
       <NextUINavbar.Content
         css={{
           "@xs": {
@@ -152,7 +171,12 @@ const Navbar = () => {
           </Dropdown>
         ) : (
           <Button onClick={onLogin} bordered color="gradient" auto shadow>
-            Login with GitHub
+            <Text css={{ display: "none", "@xsMin": { display: "block" } }}>
+              Login with GitHub
+            </Text>
+            <Text css={{ display: "block", "@xsMin": { display: "none" } }}>
+              Login
+            </Text>
           </Button>
         )}
       </NextUINavbar.Content>
