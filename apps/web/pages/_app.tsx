@@ -1,11 +1,12 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { NextUIProvider } from "@nextui-org/react";
+import { Divider, NextUIProvider } from "@nextui-org/react";
 import { createTheme } from "@nextui-org/react";
 import { createClient } from "@supabase/supabase-js";
 import { SessionContextProvider } from "@supabase/auth-helpers-react";
 
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const darkTheme = createTheme({
   type: "dark",
@@ -27,6 +28,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <NextUIProvider theme={darkTheme}>
           <Navbar />
           <Component {...pageProps} />
+          <Divider />
+          <Footer />
         </NextUIProvider>
       </SessionContextProvider>
     </>
