@@ -100,7 +100,7 @@ router.delete("/", async (req: Request, res: Response) => {
     name: z.string().min(1),
   });
 
-  const parsedBody = bodySchema.safeParse(req.body);
+  const parsedBody = bodySchema.safeParse(req.query);
 
   if (parsedBody.success) {
     const { data, error } = await storageAdmin
