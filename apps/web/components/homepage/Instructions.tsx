@@ -1,6 +1,4 @@
 import { Card, Container, Text } from "@nextui-org/react";
-import copy from "../../assets/copy.svg";
-import checkmark from "../../assets/checkmark.svg";
 import CopyablePre from "../CopyablePre";
 
 const Instructions = () => {
