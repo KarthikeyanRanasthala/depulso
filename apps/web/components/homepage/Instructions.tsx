@@ -1,6 +1,12 @@
 import { Card, Container, Text } from "@nextui-org/react";
+import copy from "../../assets/copy.svg";
+import checkmark from "../../assets/checkmark.svg";
+import CopyablePre from "../CopyablePre";
 
 const Instructions = () => {
+  let co = `? Build output directory (framework gets auto-detected):
+? Project name (static-in-seconds):`;
+
   return (
     <>
       <Container
@@ -30,17 +36,14 @@ const Instructions = () => {
         >
           <Card.Body css={{ gap: "$6" }}>
             <Text>To install the latest version of the Depulso CLI,</Text>
-            <code>npm install -g depulso</code>
+            <CopyablePre label="npm install -g depulso" />
             <Text>Login to the CLI through GitHub,</Text>
-            <code>npx depulso login</code>
+            <CopyablePre label="npx depulso login" />
             <Text>Initialize a new depulso project</Text>
-            <code>npx depulso init</code>
-            <code>
-              ? Build output directory (framework gets auto-detected):
-              <br />? Project name (static-in-seconds):
-            </code>
+            <CopyablePre label="npx depulso init" />
+            <CopyablePre label={co} />
             <Text>Deploy 🚀🚀</Text>
-            <code>npx depulso deploy</code>
+            <CopyablePre label="npx depulso deploy" />
           </Card.Body>
         </Card>
         <iframe
