@@ -105,10 +105,10 @@ const HeroComponent = () => {
         >
           <Image
             alt="supabase logo"
-            src={"/supabase-logo-icon.png"}
+            src={"/supabase-logo-wordmark--dark.png"}
             unoptimized
-            width={40}
-            height={40}
+            width={120}
+            height={24}
             style={{ objectFit: "contain" }}
           />
         </Link>
