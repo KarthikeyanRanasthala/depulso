@@ -10,15 +10,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "13.0.7",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
+    "@nextui-org/react": "1.0.0-beta.10",
     "@supabase/auth-helpers-react": "0.3.1",
     "@supabase/supabase-js": "2.2.1",
-    "@nextui-org/react": "1.0.0-beta.10",
     "axios": "1.2.1",
-    "use-debounce": "9.0.2",
-    "next-themes": "0.2.1"
+    "next": "13.0.7",
+    "use-debounce": "9.0.2"
   },
   "devDependencies": {
     "@types/react": "18.0.26",
