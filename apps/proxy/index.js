@@ -142,11 +142,11 @@ app.get(
     target: env.SUPABASE_URL,
     changeOrigin: true,
     pathRewrite: (_, req) =>
-      `/storage/v1/object/public/${env.SUPABASE_BUCKET_ID}/${
-        req.depulsoProject
+      `/storage/v1/object/public/${env.SUPABASE_BUCKET_ID}/${req.depulsoProject
       }${req.depulsoFilePath ? req.depulsoFilePath : ""}`,
     selfHandleResponse: true,
     onProxyRes: responseInterceptor((responseBuffer, _, req, res) => {
+      res.removeHeader("Content-Security-Policy");
       if (req.depulsoMimeType) {
         res.setHeader("Content-Type", req.depulsoMimeType);
       }
