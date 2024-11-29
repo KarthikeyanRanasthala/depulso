@@ -31,6 +31,11 @@ app.use(
   })
 );
 
+app.use((_, res, next) => {
+  res.setHeader("Content-Security-Policy", "default-src 'self'; style-src 'self' 'unsafe-inline'");
+  next();
+});
+
 app.use(morgan("tiny"));
 app.use(compression());
 

@@ -44,6 +44,7 @@ const Instructions = () => {
           </Card.Body>
         </Card>
         <iframe
+          sandbox="allow-scripts allow-same-origin"
           className="video"
           width="560"
           height="315"
